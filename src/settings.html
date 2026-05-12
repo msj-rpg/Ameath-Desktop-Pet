@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ameath 设置</title>
+<style>
+  :root {
+    --bg: #FFF1F6;
+    --card: #FFFFFF;
+    --border: #F3C2D4;
+    --accent: #FF69B4;
+    --accent-dark: #E84D8E;
+    --text: #4A2A3A;
+    --subtext: #7A5564;
+    --hover: #FFE1EE;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    overflow-y: auto;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color: white;
+    padding: 18px 20px 14px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .header small {
+    font-weight: 400;
+    font-size: 11px;
+    opacity: 0.8;
+    margin-left: 8px;
+  }
+
+  /* Sections */
+  .section {
+    margin: 12px 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .section-title {
+    padding: 10px 14px 6px;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--accent-dark);
+  }
+  .section-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    min-height: 36px;
+  }
+  .section-row + .section-row {
+    border-top: 1px solid #FCE4EE;
+  }
+  .section-row > label:first-child {
+    flex: 1;
+    min-width: 60px;
+  }
+  .section-row .control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    min-width: 190px;
+  }
+
+  /* Range slider */
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 140px;
+    height: 3px;
+    border-radius: 1.5px;
+    background: var(--border);
+    outline: none;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 3px;
+    border-radius: 1.5px;
+    background: var(--border);
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0.5px 3px rgba(0,0,0,0.12);
+    margin-top: -5.5px;
+    transition: box-shadow 0.15s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 0 4px rgba(255,105,180,0.15);
+  }
+
+  /* Select */
+  select {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    font-size: 12px;
+    outline: none;
+  }
+  select:focus { border-color: var(--accent); }
+
+  /* Toggle switch — fully custom, no native checkbox visible */
+  .toggle {
+    position: relative;
+    display: block;
+    width: 36px;
+    min-width: 36px;
+    max-width: 36px;
+    height: 20px;
+    min-height: 20px;
+    max-height: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .toggle input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+    opacity: 0;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    pointer-events: none;
+  }
+  .toggle .slider {
+    display: block;
+    width: 36px;
+    height: 20px;
+    background: #D4D4D8;
+    border-radius: 10px;
+    transition: background 0.25s ease;
+    position: relative;
+  }
+  .toggle .slider::before {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 2px;
+    top: 2px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+  }
+  .toggle input:checked + .slider {
+    background: var(--accent);
+  }
+  .toggle input:checked + .slider::before {
+    transform: translateX(16px);
+  }
+
+  /* Value display */
+  .val {
+    font-size: 12px;
+    color: var(--subtext);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  /* File list items */
+  .file-list {
+    padding: 4px 14px 8px;
+  }
+  .file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: var(--text);
+    background: #FFF5F9;
+    border-radius: 6px;
+    margin-bottom: 4px;
+  }
+  .file-item .file-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 6px;
+  }
+  .file-item .remove-btn {
+    cursor: pointer;
+    color: #E8799A;
+    font-size: 13px;
+    flex-shrink: 0;
+    padding: 0 4px;
+    border: none;
+    background: none;
+  }
+  .file-item .remove-btn:hover { color: #D84B6A; }
+  .action-row {
+    padding: 6px 14px;
+    border-top: 1px solid #FCE4EE;
+  }
+  .action-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent-dark);
+    margin-bottom: 4px;
+  }
+  .action-files {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+  .action-file-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 8px;
+    background: #FFF0F5;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 10px;
+    color: var(--text);
+  }
+  .action-file-tag .tag-remove {
+    cursor: pointer;
+    color: #E8799A;
+    font-size: 11px;
+    margin-left: 2px;
+  }
+  .action-file-tag .tag-remove:hover { color: #D84B6A; }
+  .add-btn {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: var(--accent-dark);
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    background: none;
+    margin-top: 2px;
+  }
+  .add-btn:hover {
+    background: #FFF0F5;
+    border-color: var(--accent);
+  }
+  .open-folder-btn {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: var(--subtext);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    background: none;
+    margin-left: 6px;
+  }
+  .open-folder-btn:hover { background: #FFF0F5; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 10px;
+    color: var(--subtext);
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  ✨ Ameath 设置 <small>v1.0.0</small>
+</div>
+
+<!-- Personalization -->
+<div class="section">
+  <div class="section-title">🎨 个性化</div>
+
+  <div class="section-row">
+    <label>缩放</label>
+    <div class="control">
+      <input type="range" id="scale" min="1" max="20" step="1" value="10"/>
+      <span class="val" id="scale-val">1.0x</span>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <label>透明度</label>
+    <div class="control">
+      <input type="range" id="transparency" min="1" max="10" step="1" value="10"/>
+      <span class="val" id="transparency-val">100%</span>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <label>游荡模式</label>
+    <div class="control">
+      <select id="wander-mode">
+        <option value="0">始终移动</option>
+        <option value="1">概率停驻</option>
+        <option value="2">停驻</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <label>游荡速度</label>
+    <div class="control">
+      <input type="range" id="wander-speed" min="1" max="30" step="1" value="8"/>
+      <span class="val" id="wander-speed-val">0.8</span>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <label>显示优先级</label>
+    <div class="control">
+      <select id="display-priority">
+        <option value="1">始终置顶</option>
+        <option value="2">全屏时隐藏</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <label>窗口贴靠</label>
+    <div class="control">
+      <label class="toggle">
+        <input type="checkbox" id="window-snap" checked/>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="section-row" id="snap-seek-enabled-row">
+    <label>主动寻找窗口</label>
+    <div class="control">
+      <label class="toggle">
+        <input type="checkbox" id="snap-seek-enabled" checked/>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="section-row" id="snap-seek-interval-row">
+    <label>寻找周期</label>
+    <div class="control">
+      <input type="range" id="snap-seek-interval" min="15" max="120" step="5" value="30"/>
+      <span class="val" id="snap-seek-interval-val">30s</span>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <label>跨屏游荡</label>
+    <div class="control">
+      <label class="toggle">
+        <input type="checkbox" id="total-screen"/>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <label>显示器</label>
+    <div class="control">
+      <select id="screen-index"></select>
+    </div>
+  </div>
+</div>
+
+<!-- Voice -->
+<div class="section">
+  <div class="section-title">🗣 语音</div>
+
+  <div class="section-row">
+    <label>启用语音</label>
+    <div class="control">
+      <label class="toggle">
+        <input type="checkbox" id="voice-enabled" checked/>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <label>语音音量</label>
+    <div class="control">
+      <input type="range" id="voice-volume" min="0" max="150" step="1" value="100"/>
+      <span class="val" id="voice-volume-val">100</span>
+    </div>
+  </div>
+
+  <div id="voice-actions-container"></div>
+
+  <div style="padding: 6px 14px; border-top: 1px solid #FCE4EE;">
+    <button class="add-btn" id="add-voice-btn">+ 添加自定义语音</button>
+    <button class="open-folder-btn" id="open-voice-folder">打开语音文件夹</button>
+  </div>
+</div>
+
+<!-- Music -->
+<div class="section">
+  <div class="section-title">🎵 音乐</div>
+
+  <div class="section-row">
+    <label>启用音乐</label>
+    <div class="control">
+      <label class="toggle">
+        <input type="checkbox" id="music-enabled"/>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <label>音乐音量</label>
+    <div class="control">
+      <input type="range" id="music-volume" min="0" max="150" step="1" value="100"/>
+      <span class="val" id="music-volume-val">100</span>
+    </div>
+  </div>
+
+  <div id="music-list-container" class="file-list"></div>
+
+  <div style="padding: 6px 14px; border-top: 1px solid #FCE4EE;">
+    <button class="add-btn" id="add-music-btn">+ 添加自定义音乐</button>
+    <button class="open-folder-btn" id="open-music-folder">打开音乐文件夹</button>
+  </div>
+</div>
+
+<!-- Idle Mode -->
+<div class="section">
+  <div class="section-title">💤 待机模式</div>
+
+  <div class="section-row">
+    <label>启用待机模式</label>
+    <div class="control">
+      <label class="toggle">
+        <input type="checkbox" id="idle-mode-enabled"/>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <label>触发延迟</label>
+    <div class="control">
+      <input type="range" id="idle-mode-delay" min="10" max="300" step="10" value="60"/>
+      <span class="val" id="idle-mode-delay-val">60s</span>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <label>待机音乐</label>
+    <div class="control">
+      <select id="idle-mode-music"></select>
+    </div>
+  </div>
+</div>
+
+<!-- System -->
+<div class="section">
+  <div class="section-title">⚙️ 系统</div>
+  <div class="section-row">
+    <label>开机自启</label>
+    <div class="control">
+      <label class="toggle">
+        <input type="checkbox" id="autostart"/>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <label>调试控制台</label>
+    <div class="control">
+      <button id="open-devtools-btn" style="padding:3px 12px; border:1px solid #F3C2D4; border-radius:6px; background:white; color:#D1477A; font-size:12px; cursor:pointer;">打开</button>
+    </div>
+  </div>
+</div>
+
+<!-- About -->
+<div class="section">
+  <div class="section-title">ℹ️ 关于</div>
+  <div class="section-row">
+    <label>作者</label>
+    <span style="color:var(--subtext)">msj-rpg</span>
+  </div>
+  <div class="section-row">
+    <label>GitHub</label>
+    <a href="https://github.com/msj-rpg" target="_blank" style="color:var(--accent)">@msj-rpg</a>
+  </div>
+  <div class="section-row">
+    <label>致谢</label>
+    <span style="color:var(--subtext);font-size:12px">
+      原版 <a href="https://gitee.com/lzy-buaa-jdi/ameath" target="_blank" style="color:var(--accent)">lzy-buaa-jdi/ameath</a>
+      · GIF素材 <a href="https://b23.tv/LOWldqI" target="_blank" style="color:var(--accent)">@_BLZ_</a>
+    </span>
+  </div>
+</div>
+
+<div class="footer">Ameath Desktop Pet · Tauri v2 Port</div>
+
+<script>
+const { invoke } = window.__TAURI__.core;
+
+// Element refs
+const scaleSlider = document.getElementById("scale");
+const scaleVal = document.getElementById("scale-val");
+const transSlider = document.getElementById("transparency");
+const transVal = document.getElementById("transparency-val");
+const wanderMode = document.getElementById("wander-mode");
+const wanderSpeed = document.getElementById("wander-speed");
+const wanderSpeedVal = document.getElementById("wander-speed-val");
+const voiceEnabled = document.getElementById("voice-enabled");
+const voiceVolume = document.getElementById("voice-volume");
+const voiceVolumeVal = document.getElementById("voice-volume-val");
+const musicEnabled = document.getElementById("music-enabled");
+const musicVolume = document.getElementById("music-volume");
+const musicVolumeVal = document.getElementById("music-volume-val");
+const screenIndex = document.getElementById("screen-index");
+const displayPriority = document.getElementById("display-priority");
+const windowSnap = document.getElementById("window-snap");
+const snapSeekEnabled = document.getElementById("snap-seek-enabled");
+const snapSeekInterval = document.getElementById("snap-seek-interval");
+const snapSeekIntervalVal = document.getElementById("snap-seek-interval-val");
+const totalScreen = document.getElementById("total-screen");
+const idleModeEnabled = document.getElementById("idle-mode-enabled");
+const idleModeDelay = document.getElementById("idle-mode-delay");
+const idleModeDelayVal = document.getElementById("idle-mode-delay-val");
+const idleModeMusic = document.getElementById("idle-mode-music");
+const autostartToggle = document.getElementById("autostart");
+
+let currentConfig = {};
+
+async function loadConfig() {
+  try {
+    currentConfig = await invoke("load_config");
+  } catch (e) {
+    console.warn("Load config failed:", e);
+    return;
+  }
+  // Scale: index 0=0.1, 9=1.0, 19=2.0
+  const scaleIdx = Math.round(currentConfig.scale * 10) - 1;
+  scaleSlider.value = Math.max(1, Math.min(20, scaleIdx + 1));
+  scaleVal.textContent = currentConfig.scale.toFixed(1) + "x";
+
+  // Transparency: index 0=0.1, 9=1.0
+  const transIdx = Math.round((currentConfig.transparency ?? 1.0) * 10);
+  transSlider.value = Math.max(1, Math.min(10, transIdx));
+  transVal.textContent = Math.round((currentConfig.transparency ?? 1.0) * 100) + "%";
+
+  wanderMode.value = currentConfig.wander_idle_stay_mode ?? 2;
+
+  const ws = currentConfig.wander_speed ?? 0.8;
+  wanderSpeed.value = Math.round(ws * 10);
+  wanderSpeedVal.textContent = ws.toFixed(1);
+
+  displayPriority.value = currentConfig.display_priority ?? 1;
+  windowSnap.checked = currentConfig.window_snap !== false;
+  snapSeekEnabled.checked = currentConfig.snap_seek_enabled !== false;
+  updateSnapSeekVisibility();
+  const ssi = currentConfig.snap_seek_interval ?? 30;
+  snapSeekInterval.value = ssi;
+  snapSeekIntervalVal.textContent = ssi + "s";
+  totalScreen.checked = currentConfig.total_screen || false;
+
+  voiceEnabled.checked = currentConfig.voice_enabled !== false;
+  voiceVolume.value = currentConfig.voice_volume ?? 100;
+  voiceVolumeVal.textContent = currentConfig.voice_volume ?? 100;
+
+  musicEnabled.checked = currentConfig.music_enabled || false;
+  musicVolume.value = currentConfig.music_volume ?? 100;
+  musicVolumeVal.textContent = currentConfig.music_volume ?? 100;
+
+  // Idle mode
+  idleModeEnabled.checked = currentConfig.idle_mode_enabled || false;
+  idleModeDelay.value = currentConfig.idle_mode_delay ?? 60;
+  idleModeDelayVal.textContent = (currentConfig.idle_mode_delay ?? 60) + "s";
+
+  // Populate idle music selector
+  await populateIdleMusicSelector();
+
+  // Autostart state
+  try {
+    const isEnabled = await invoke("plugin:autostart|is_enabled");
+    autostartToggle.checked = isEnabled;
+  } catch (e) {
+    console.warn("Autostart check failed:", e);
+  }
+
+  // Load monitors
+  try {
+    const monitors = await invoke("get_monitors");
+    screenIndex.innerHTML = "";
+    monitors.forEach((m, i) => {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = `显示器 ${i + 1} (${m[2]}x${m[3]})`;
+      screenIndex.appendChild(opt);
+    });
+    screenIndex.value = currentConfig.screen_index ?? 0;
+  } catch (e) {
+    console.warn("Get monitors failed:", e);
+  }
+}
+
+async function saveConfig() {
+  try {
+    await invoke("save_config", { cfg: currentConfig });
+    // Notify main window to reload config
+    const mainWin = window.__TAURI__.webviewWindow?.WebviewWindow?.getByLabel?.("main");
+    // Use eval on main window to apply changes live
+  } catch (e) {
+    console.warn("Save config failed:", e);
+  }
+}
+
+function updateAndSave(key, value) {
+  currentConfig[key] = value;
+  saveConfig();
+  // Notify main pet window
+  notifyMain();
+}
+
+function notifyMain() {
+  // Use Tauri event system to notify main window
+  try {
+    window.__TAURI__.event.emit("config-changed", currentConfig);
+  } catch (e) {
+    console.warn("Emit failed:", e);
+  }
+}
+
+// Bind events
+scaleSlider.addEventListener("input", () => {
+  const idx = parseInt(scaleSlider.value);
+  const scale = +(idx / 10).toFixed(1);
+  scaleVal.textContent = scale + "x";
+  updateAndSave("scale", scale);
+});
+
+transSlider.addEventListener("input", () => {
+  const idx = parseInt(transSlider.value);
+  const alpha = +(idx / 10).toFixed(1);
+  transVal.textContent = Math.round(alpha * 100) + "%";
+  updateAndSave("transparency", alpha);
+});
+
+wanderMode.addEventListener("change", () => {
+  updateAndSave("wander_idle_stay_mode", parseInt(wanderMode.value));
+});
+
+wanderSpeed.addEventListener("input", () => {
+  const val = +(parseInt(wanderSpeed.value) / 10).toFixed(1);
+  wanderSpeedVal.textContent = val.toFixed(1);
+  updateAndSave("wander_speed", val);
+});
+
+voiceEnabled.addEventListener("change", () => {
+  updateAndSave("voice_enabled", voiceEnabled.checked);
+});
+
+voiceVolume.addEventListener("input", () => {
+  voiceVolumeVal.textContent = voiceVolume.value;
+  updateAndSave("voice_volume", parseInt(voiceVolume.value));
+});
+
+musicEnabled.addEventListener("change", () => {
+  updateAndSave("music_enabled", musicEnabled.checked);
+});
+
+musicVolume.addEventListener("input", () => {
+  musicVolumeVal.textContent = musicVolume.value;
+  updateAndSave("music_volume", parseInt(musicVolume.value));
+});
+
+screenIndex.addEventListener("change", () => {
+  updateAndSave("screen_index", parseInt(screenIndex.value));
+});
+
+displayPriority.addEventListener("change", () => {
+  updateAndSave("display_priority", parseInt(displayPriority.value));
+});
+
+function updateSnapSeekVisibility() {
+  const show = windowSnap.checked;
+  document.getElementById("snap-seek-enabled-row").style.display = show ? "" : "none";
+  document.getElementById("snap-seek-interval-row").style.display = show ? "" : "none";
+}
+
+windowSnap.addEventListener("change", () => {
+  updateAndSave("window_snap", windowSnap.checked);
+  updateSnapSeekVisibility();
+});
+
+snapSeekEnabled.addEventListener("change", () => {
+  updateAndSave("snap_seek_enabled", snapSeekEnabled.checked);
+});
+
+snapSeekInterval.addEventListener("input", () => {
+  const v = parseInt(snapSeekInterval.value);
+  snapSeekIntervalVal.textContent = v + "s";
+  updateAndSave("snap_seek_interval", v);
+});
+
+totalScreen.addEventListener("change", () => {
+  updateAndSave("total_screen", totalScreen.checked);
+});
+
+autostartToggle.addEventListener("change", async () => {
+  try {
+    if (autostartToggle.checked) {
+      await invoke("plugin:autostart|enable");
+    } else {
+      await invoke("plugin:autostart|disable");
+    }
+  } catch (e) {
+    console.warn("Autostart toggle failed:", e);
+    autostartToggle.checked = !autostartToggle.checked;
+  }
+});
+
+// ============ DevTools ============
+document.getElementById("open-devtools-btn").addEventListener("click", () => {
+  invoke("open_devtools").catch(e => console.warn("Open devtools failed:", e));
+});
+
+// ============ Idle Mode ============
+idleModeEnabled.addEventListener("change", () => {
+  updateAndSave("idle_mode_enabled", idleModeEnabled.checked);
+});
+
+idleModeDelay.addEventListener("input", () => {
+  idleModeDelayVal.textContent = idleModeDelay.value + "s";
+  updateAndSave("idle_mode_delay", parseInt(idleModeDelay.value));
+});
+
+idleModeMusic.addEventListener("change", () => {
+  updateAndSave("idle_mode_music", idleModeMusic.value);
+});
+
+async function populateIdleMusicSelector() {
+  const builtinMusic = ["爱弥斯的待机小曲.mp3", "碎花.mp3", "纸飞机.mp3", "远航星的告别.mp3", "那颗星梦见的春日.mp3"];
+  let customFiles = [];
+  try {
+    customFiles = await invoke("list_custom_files", { fileType: "music" });
+  } catch (e) {}
+
+  idleModeMusic.innerHTML = "";
+  for (const name of builtinMusic) {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name.replace(/\.[^.]+$/, "");
+    idleModeMusic.appendChild(opt);
+  }
+  for (const name of customFiles) {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name.replace(/\.[^.]+$/, "") + " (自定义)";
+    idleModeMusic.appendChild(opt);
+  }
+  idleModeMusic.value = currentConfig.idle_mode_music || "爱弥斯的待机小曲.mp3";
+}
+
+// ============ Voice Action Management ============
+const VOICE_ACTIONS = [
+  { key: "startup", label: "启动" },
+  { key: "idle", label: "待机" },
+  { key: "wander", label: "游荡" },
+  { key: "drag", label: "拖拽" },
+  { key: "screen", label: "趴窗" },
+];
+const BUILTIN_VOICES = [
+  "一起去拯救世界吧.wav", "你，看见我了.wav", "嗯.wav",
+  "嗯，哼哼.wav", "嗯，嘿嘿.wav", "嘿嘿.wav",
+  "现实系统，侵入完成.wav", "看这里.wav",
+];
+const VOICE_DEFAULTS = {
+  startup: ["现实系统，侵入完成.wav"],
+  idle: ["看这里.wav"],
+  wander: ["嗯.wav", "嗯，哼哼.wav", "嗯，嘿嘿.wav", "嘿嘿.wav"],
+  drag: ["一起去拯救世界吧.wav", "你，看见我了.wav"],
+  screen: [],
+};
+
+const voiceActionsContainer = document.getElementById("voice-actions-container");
+const musicListContainer = document.getElementById("music-list-container");
+
+function getVoiceMap() {
+  return currentConfig.voice_map || {};
+}
+
+function getActionFiles(action) {
+  const map = getVoiceMap();
+  if (map[action] && map[action].length > 0) return map[action];
+  return VOICE_DEFAULTS[action] || [];
+}
+
+async function renderVoiceActions() {
+  // Get list of custom voice files available
+  let customFiles = [];
+  try {
+    customFiles = await invoke("list_custom_files", { fileType: "voice" });
+  } catch (e) {}
+
+  const allAvailable = [...BUILTIN_VOICES, ...customFiles];
+
+  voiceActionsContainer.innerHTML = "";
+  for (const action of VOICE_ACTIONS) {
+    const files = getActionFiles(action.key);
+
+    const row = document.createElement("div");
+    row.className = "action-row";
+
+    const label = document.createElement("div");
+    label.className = "action-label";
+    label.textContent = action.label;
+    row.appendChild(label);
+
+    const filesDiv = document.createElement("div");
+    filesDiv.className = "action-files";
+
+    for (const f of files) {
+      const tag = document.createElement("span");
+      tag.className = "action-file-tag";
+      const nameSpan = document.createElement("span");
+      nameSpan.textContent = f.replace(/^sound\/voice\//, "");
+      tag.appendChild(nameSpan);
+
+      const removeBtn = document.createElement("span");
+      removeBtn.className = "tag-remove";
+      removeBtn.textContent = "✕";
+      removeBtn.onclick = () => removeVoiceFromAction(action.key, f);
+      tag.appendChild(removeBtn);
+
+      filesDiv.appendChild(tag);
+    }
+
+    // Dropdown to add a file to this action
+    const addSelect = document.createElement("select");
+    addSelect.style.cssText = "font-size:10px; padding:1px 4px; border-radius:4px; border:1px dashed #F3C2D4; background:white; color:#888; cursor:pointer;";
+    const defaultOpt = document.createElement("option");
+    defaultOpt.value = "";
+    defaultOpt.textContent = "+ 添加";
+    addSelect.appendChild(defaultOpt);
+
+    for (const av of allAvailable) {
+      if (!files.includes(av) && !files.includes("sound/voice/" + av)) {
+        const opt = document.createElement("option");
+        opt.value = av;
+        opt.textContent = av;
+        addSelect.appendChild(opt);
+      }
+    }
+    addSelect.onchange = () => {
+      if (addSelect.value) {
+        addVoiceToAction(action.key, addSelect.value);
+      }
+    };
+    filesDiv.appendChild(addSelect);
+
+    row.appendChild(filesDiv);
+    voiceActionsContainer.appendChild(row);
+  }
+}
+
+function addVoiceToAction(action, filename) {
+  if (!currentConfig.voice_map) currentConfig.voice_map = {};
+  const current = getActionFiles(action).slice();
+  // Normalize: builtin files use just the filename
+  if (!current.includes(filename) && !current.includes("sound/voice/" + filename)) {
+    current.push(filename);
+  }
+  currentConfig.voice_map[action] = current;
+  saveConfig();
+  notifyMain();
+  renderVoiceActions();
+}
+
+function removeVoiceFromAction(action, filename) {
+  if (!currentConfig.voice_map) currentConfig.voice_map = {};
+  let current = getActionFiles(action).slice();
+  current = current.filter(f => f !== filename);
+  currentConfig.voice_map[action] = current;
+  saveConfig();
+  notifyMain();
+  renderVoiceActions();
+}
+
+document.getElementById("add-voice-btn").addEventListener("click", async () => {
+  try {
+    const name = await invoke("pick_audio_file", { fileType: "voice" });
+    if (name && name !== "cancelled") {
+      renderVoiceActions();
+    }
+  } catch (e) {
+    if (e !== "cancelled") console.warn("Pick voice failed:", e);
+  }
+});
+
+document.getElementById("open-voice-folder").addEventListener("click", () => {
+  invoke("open_custom_folder", { fileType: "voice" }).catch(() => {});
+});
+
+// ============ Music List Management ============
+const BUILTIN_MUSIC = ["碎花.mp3", "纸飞机.mp3", "远航星的告别.mp3", "那颗星梦见的春日.mp3"];
+
+async function renderMusicList() {
+  let customFiles = [];
+  try {
+    customFiles = await invoke("list_custom_files", { fileType: "music" });
+  } catch (e) {}
+
+  // Update custom_music in config to reflect actual files
+  currentConfig.custom_music = customFiles;
+
+  musicListContainer.innerHTML = "";
+
+  // Show builtin music
+  for (const name of BUILTIN_MUSIC) {
+    const item = document.createElement("div");
+    item.className = "file-item";
+    item.innerHTML = `<span class="file-name">🎵 ${name}</span><span style="color:var(--subtext);font-size:10px">内置</span>`;
+    musicListContainer.appendChild(item);
+  }
+
+  // Show custom music
+  for (const name of customFiles) {
+    const item = document.createElement("div");
+    item.className = "file-item";
+    const nameSpan = document.createElement("span");
+    nameSpan.className = "file-name";
+    nameSpan.textContent = "🎵 " + name;
+    item.appendChild(nameSpan);
+
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "remove-btn";
+    removeBtn.textContent = "✕";
+    removeBtn.onclick = async () => {
+      try {
+        await invoke("remove_custom_file", { fileType: "music", filename: name });
+        currentConfig.custom_music = currentConfig.custom_music.filter(f => f !== name);
+        saveConfig();
+        notifyMain();
+        renderMusicList();
+      } catch (e) {
+        console.warn("Remove music failed:", e);
+      }
+    };
+    item.appendChild(removeBtn);
+    musicListContainer.appendChild(item);
+  }
+}
+
+document.getElementById("add-music-btn").addEventListener("click", async () => {
+  try {
+    const name = await invoke("pick_audio_file", { fileType: "music" });
+    if (name && name !== "cancelled") {
+      if (!currentConfig.custom_music) currentConfig.custom_music = [];
+      if (!currentConfig.custom_music.includes(name)) {
+        currentConfig.custom_music.push(name);
+      }
+      saveConfig();
+      notifyMain();
+      renderMusicList();
+    }
+  } catch (e) {
+    if (e !== "cancelled") console.warn("Pick music failed:", e);
+  }
+});
+
+document.getElementById("open-music-folder").addEventListener("click", () => {
+  invoke("open_custom_folder", { fileType: "music" }).catch(() => {});
+});
+
+// Range fill color helper
+function updateRangeFill(el) {
+  const min = parseFloat(el.min) || 0;
+  const max = parseFloat(el.max) || 100;
+  const val = parseFloat(el.value) || 0;
+  const pct = ((val - min) / (max - min)) * 100;
+  el.style.background = `linear-gradient(to right, #FF69B4 0%, #FF69B4 ${pct}%, #F3C2D4 ${pct}%, #F3C2D4 100%)`;
+}
+document.querySelectorAll('input[type="range"]').forEach(el => {
+  el.addEventListener("input", () => updateRangeFill(el));
+});
+function refreshAllRanges() {
+  document.querySelectorAll('input[type="range"]').forEach(updateRangeFill);
+}
+
+// Init
+loadConfig().then(() => {
+  refreshAllRanges();
+  renderVoiceActions();
+  renderMusicList();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "identifier": "default",
+  "description": "Default capabilities for Ameath",
+  "windows": ["main", "settings"],
+  "permissions": [
+    "core:default",
+    "shell:allow-open",
+    "autostart:allow-enable",
+    "autostart:allow-disable",
+    "autostart:allow-is-enabled"
+  ]
+}
